@@ -3,6 +3,7 @@ package org.webstory.ourstory.model;
 import java.util.List;
 
 import org.bson.types.ObjectId;
+import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import lombok.Data;
@@ -17,7 +18,10 @@ import lombok.Data;
 // The @Data annotation removes all boilerplate. Getters, setters, equals, hashcode, tostring, and default constructor are automatically added behind the scenes.
 public @Data class Story {
 
+	@Id
 	private ObjectId id;
 	private List<User> contributors;
+	private List<ObjectId> segments;
+	private Boolean global; // Default, new stories are not global.
 
 }
