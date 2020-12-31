@@ -23,5 +23,11 @@ public @Data class Story {
 	private List<User> contributors;
 	private List<ObjectId> segments;
 	private Boolean global; // Default, new stories are not global.
+	private String title;
+	
+	public Story(Boolean global, String title) {
+		this.global = global;
+		this.title = title;
+	}
 
 }
