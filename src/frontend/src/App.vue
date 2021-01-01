@@ -1,12 +1,28 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+      <a class="navbar-brand">OurStory</a>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="mr-3 nav-item active">
+            <b-button to="/" replace>Home</b-button>
+          </li>
+          <li class="mr-3 nav-item active">
+            <b-button to="/about" replace>About</b-button>
+          </li>
+          <li class="mr-3 nav-item active">
+            <b-button to="/global" replace>Global</b-button>
+          </li>
+        </ul>
+      </div>
+    </nav>
     <router-view/>
   </div>
 </template>
+
+<script>
+
+</script>
 
 <style>
 #app {
@@ -17,16 +33,12 @@
   color: #2c3e50;
 }
 
-#nav {
-  padding: 30px;
-}
-
-#nav a {
+router-link {
   font-weight: bold;
-  color: #2c3e50;
+  color: #ffffff;
 }
 
-#nav a.router-link-exact-active {
-  color: #42b983;
+.router-link-exact-active {
+  background-color: rgb(9, 175, 111) !important;
 }
 </style>
