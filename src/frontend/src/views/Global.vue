@@ -2,8 +2,12 @@
   <div>
     <div class="input-group mb-3">
 
+      <div class="storyArea">
+      <a>TEXT</a>
+      </div>
+
     <input @keyup="updateWordCount()" v-model="segment" type="text" class="form-control" placeholder="Text">
-      <div class="input-group-prepend">
+      <div class="input-group-append">
         <span class="input-group-text"> > </span>
       </div>
     </div>
@@ -29,3 +33,10 @@ export default {
   }
 }
 </script>
+
+<style>
+.storyArea {
+  height: 100%;
+}
+
+</style>

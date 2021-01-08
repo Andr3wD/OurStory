@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.webstory.ourstory.dao.StoryDao;
+import org.webstory.ourstory.model.Segment;
 import org.webstory.ourstory.model.Story;
+import org.webstory.ourstory.request.SegmentRequest;
 
 @Service("storyService")
 public class StoryService {
