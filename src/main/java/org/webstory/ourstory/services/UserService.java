@@ -17,6 +17,10 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	@Qualifier("userMongoDB")
 	UserDao DB;
+	
+	public User findByIp(String ip) {
+		return DB.findByIp(ip).get(0); // TODO handle multiple of the same IP.
+	}
 
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

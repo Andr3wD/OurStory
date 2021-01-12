@@ -50,4 +50,9 @@ public class UserMongoDB implements UserDao {
 		return repo.findByUsername(username);
 	}
 
+	@Override
+	public List<User> findByIp(String ip) {
+		return repo.findByIp(ip);
+	}
+
 }

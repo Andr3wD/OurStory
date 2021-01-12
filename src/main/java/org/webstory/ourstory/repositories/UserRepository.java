@@ -8,6 +8,6 @@ import org.webstory.ourstory.model.User;
 
 public interface UserRepository extends MongoRepository<User, ObjectId> {
 
-	
+	List<User> findByIp(String ip);
 	List<User> findByUsername(String username);
 }

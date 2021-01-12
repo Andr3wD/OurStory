@@ -17,4 +17,5 @@ public interface UserDao {
 	Optional<User> findById(ObjectId id);
 	List<User> getAll();
 	List<User> findByUsername(String username);
+	List<User> findByIp(String ip);
 }
