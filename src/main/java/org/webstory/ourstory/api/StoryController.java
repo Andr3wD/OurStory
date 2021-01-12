@@ -30,24 +30,4 @@ public class StoryController {
 
 		return new ResponseEntity<String>(HttpStatus.OK);
 	}
-
-	@PostMapping("/addSegment") // TODO move to new SegmentController.
-	public ResponseEntity<?> addSegment(@RequestBody SegmentRequest requestSegment) {
-		// TODO Validate input.
-		
-		Segment seg = segmentService.requestToSegment(requestSegment);
-		segmentService.save(seg);
-		
-		return new ResponseEntity<String>("Added your segment named: " + seg.getMessage(), HttpStatus.OK);
-	}
-	
-	@PostMapping("/editSegment") // TODO move to new SegmentController.
-	public ResponseEntity<?> editSegment(@RequestBody SegmentRequest requestSegment) {
-		// TODO Validate input.
-		
-		ObjectId id = new ObjectId(requestSegment.hexObjectId);
-		
-		return new ResponseEntity<String>(HttpStatus.OK);
-	}
-	
 }
