@@ -1,10 +1,9 @@
 <template>
   <div>
-    <div class="input-group mb-3">
-
-      <div class="storyArea">
+    <div class="storyArea">
       <a>TEXT</a>
-      </div>
+    </div>
+    <div class="input-group mb-3">
 
     <input @keyup="updateWordCount()" v-model="segment" type="text" class="form-control" placeholder="Text">
       <div class="input-group-append">
@@ -12,10 +11,13 @@
       </div>
     </div>
     <span>Characters Left: {{charsLeft}}</span>
+    <span>First Segment: {{this.firstSegment}} </span>
   </div>
 </template>
 
 <script>
+
+import segmentService from '../services/segment-service'
 
 export default {
   name: 'Global',
@@ -23,13 +25,27 @@ export default {
     return {
       segment: '',
       maxChars: 100,
-      charsLeft: 100
+      charsLeft: 100,
+      firstSegment: ''
     }
   },
   methods: {
     updateWordCount () {
       this.charsLeft = this.maxChars - this.segment.length
+    },
+    getFirstSegment () {
+      segmentService.getFirstSegment()
+        .then(
+          response => {
+            this.firstSegment = response.data
+          }
+        ).catch(e => {
+
+        })
     }
+  },
+  mounted () {
+    this.getFirstSegment()
   }
 }
 </script>
