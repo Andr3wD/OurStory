@@ -15,7 +15,7 @@
   </div>
 </template>
 
-<scrip
+<script>
 
 import segmentService from '../services/segment-service'
 
@@ -48,7 +48,7 @@ export default {
     this.getFirstSegment()
   }
 }
-</scrip>
+</script>
 
 <style>
 .storyArea {
