@@ -15,26 +15,28 @@ import org.webstory.ourstory.response.StoryResponse;
 
 @Service("storyService")
 public class StoryService {
+
 	@Autowired
 	SegmentService segmentService;
+
 	@Autowired
 	@Qualifier("storyMongoDB") // This is what links our choice of DB to our use of it.
 	StoryDao DB;
-	
+
 	public Story save(Story story) {
 		return DB.save(story);
 	}
-	
+
 	public boolean delete(Story story) {
 		try {
 			DB.delete(story);
 			return true;
-		} catch(IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			return false;
 		}
 	}
-	
+
 	public Story findById(ObjectId id) {
 		Optional<Story> temp = DB.findById(id);
 		if (!temp.isEmpty()) {
@@ -43,31 +45,31 @@ public class StoryService {
 			return null;
 		}
 	}
-	
+
 	public StoryResponse convertToResponse(ObjectId id) {
-		
 		Story story = findById(id);
 		List<ObjectId> segments = story.getSegments();
 		List<SegmentResponse> responses = new ArrayList<SegmentResponse>();
 		List<String> entries = new ArrayList<String>();
-		List<String> participants= new ArrayList<String>();
+		List<String> participants = new ArrayList<String>();
 		StoryResponse storyR = new StoryResponse();
-		
+
 		for (ObjectId seg : segments) {
 			SegmentResponse response = segmentService.convertToResponse(seg);
 			responses.add(response);
 			entries.add(response.getMessage());
 			participants.add(response.getUsername());
-			
+
 		}
 		storyR.setSegments(responses);
 		storyR.setEntries(entries);
 		storyR.setParticipants(participants);
 		return storyR;
 	}
-	
+
 	/**
 	 * USE SPARINGLY
+	 * 
 	 * @return List of all Stories in the DB.
 	 */
 	public List<Story> getAll() {

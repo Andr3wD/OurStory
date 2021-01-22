@@ -14,21 +14,23 @@ import org.webstory.ourstory.response.SegmentResponse;
 
 @Service
 public class SegmentService {
+
 	@Autowired
 	UserService userService;
+
 	@Autowired
 	@Qualifier("segmentMongoDB")
 	SegmentDao DB;
-	
+
 	public Segment save(Segment segment) {
 		return DB.save(segment);
 	}
-	
+
 	public boolean delete(Segment segment) {
 		try {
 			DB.delete(segment);
 			return true;
-		} catch(IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -39,7 +41,7 @@ public class SegmentService {
 		seg.setMessage(request.message);
 		return seg;
 	}
-	
+
 	public Segment findById(ObjectId id) {
 		Optional<Segment> temp = DB.findById(id);
 		if (!temp.isEmpty()) {
@@ -48,14 +50,14 @@ public class SegmentService {
 			return null;
 		}
 	}
-	
+
 	public SegmentResponse convertToResponse(ObjectId id) {
 		Segment seg = findById(id);
 		ObjectId useId = seg.getOwner();
 		User user = userService.findById(useId);
 
 		SegmentResponse response = new SegmentResponse();
-		
+
 		response.setHexObjectId(id.toHexString());
 		response.setMessage(seg.getMessage());
 		response.setUsername(user.getUsername());

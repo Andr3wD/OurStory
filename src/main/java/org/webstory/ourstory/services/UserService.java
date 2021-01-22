@@ -1,5 +1,6 @@
 package org.webstory.ourstory.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.webstory.ourstory.dao.UserDao;
+import org.webstory.ourstory.model.Segment;
 import org.webstory.ourstory.model.User;
 
 @Service("userService")
@@ -20,8 +22,21 @@ public class UserService implements UserDetailsService {
 	@Qualifier("userMongoDB")
 	UserDao DB;
 	
+	@Autowired
+	SegmentService segmentService;
+	
+	public User save(User user) {
+		return DB.save(user);
+	}
+
+	
 	public User findByIp(String ip) {
-		return DB.findByIp(ip).get(0); // TODO handle multiple of the same IP.
+		List<User> list = DB.findByIp(ip);
+		if (list.size() == 0) {
+			return null;
+		} else { 
+			return list.get(0); // TODO handle multiple of the same IP.
+		}
 	}
 	
 	public User findById(ObjectId id) {
@@ -30,6 +45,26 @@ public class UserService implements UserDetailsService {
 			return temp.get();
 		} else {
 			return null;	
+		}
+	}
+	
+	public Segment getRecentSegmentByPost(User user) {
+		List<ObjectId> segList = user.getSegments();
+		if (segList.size() > 1) {
+			ObjectId id = segList.get(0);
+			Date recent = segmentService.findById(id).getCreated();
+			for (ObjectId segID : user.getSegments()) {
+				Date loopSegDate = segmentService.findById(segID).getCreated();
+				if (recent.compareTo(loopSegDate) > 0) {
+					recent = loopSegDate;
+					id = segID;
+				}
+			}
+			return segmentService.findById(id);
+		} else if (segList.size() == 1) {
+			return segmentService.findById(segList.get(0));
+		} else { // No post has been made
+			return null;
 		}
 	}
 

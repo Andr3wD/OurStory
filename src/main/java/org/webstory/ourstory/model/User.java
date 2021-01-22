@@ -1,5 +1,6 @@
 package org.webstory.ourstory.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -28,7 +29,7 @@ public @Data class User implements UserDetails {
 	@Id
 	private ObjectId id;
 	private String ip; // HttpServletRequest.getRemoteAddr() returns String ip
-	private List<ObjectId> segments;
+	private List<ObjectId> segments = new ArrayList<ObjectId>();
 	private String username = "Anonymous"; // Default.
 	private String password;
 

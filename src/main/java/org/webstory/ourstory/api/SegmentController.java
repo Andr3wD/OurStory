@@ -1,5 +1,9 @@
 package org.webstory.ourstory.api;
 
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.webstory.ourstory.model.Segment;
+import org.webstory.ourstory.model.User;
 import org.webstory.ourstory.request.SegmentRequest;
 import org.webstory.ourstory.response.SegmentResponse;
 import org.webstory.ourstory.services.SegmentService;
@@ -32,13 +37,41 @@ public class SegmentController {
 	UserService userService;
 	
 	@PostMapping("/addSegment") 
-	public ResponseEntity<?> addSegment(@RequestBody SegmentRequest requestSegment) {
+	public ResponseEntity<?> addSegment(@RequestBody SegmentRequest requestSegment, HttpServletRequest requestInfo) {
 		// TODO Validate input.
 		
-		Segment seg = segmentService.requestToSegment(requestSegment);
-		segmentService.save(seg);
-		
-		return new ResponseEntity<String>("Added your segment named: " + seg.getMessage(), HttpStatus.OK);
+		// Get the client IP and validate if the user recently added to the story or not.
+		String clientIp = requestInfo.getRemoteAddr();
+		User user = userService.findByIp(clientIp);
+		Date threshold = new Date((new Date()).getTime()-1000*60*60); // Get the threshold date. 1000ms/s * 60s/min * 60min/hr = 1 hour before right now.
+		if (user != null) { // User exists
+			Date mostRecent = userService.getRecentSegmentByPost(user).getCreated();
+			if (mostRecent.before(threshold)) { // Most recent post was before threshold (1 hour ago)
+				Segment newSeg = segmentService.requestToSegment(requestSegment); // Convert request to segment.
+				newSeg.setOwner(user.getId());
+				segmentService.save(newSeg); // Save new segment
+				
+				return new ResponseEntity<String>("Added old user's segment message: " + newSeg.getMessage(), HttpStatus.OK);
+			} else {
+				System.out.println("Attempt to post too early from IP: " + clientIp);
+				return new ResponseEntity<String>("You posted too recently! Post again in: " + (threshold.getTime() - mostRecent.getTime()) + "ms.", HttpStatus.FORBIDDEN);
+			}
+		} else { // User doesn't exist
+			Segment newSeg = segmentService.requestToSegment(requestSegment); // Convert request to segment.
+			newSeg = segmentService.save(newSeg); // Save brand new segment
+			
+			// Initialize a new User
+			User newUser = new User();
+			newUser.setIp(clientIp);
+			System.out.println(newSeg.getId());
+			newUser.addSegment(newSeg.getId());
+			
+			newUser = userService.save(newUser); // Save new user in DB.
+			newSeg.setOwner(newUser.getId());
+			
+			segmentService.save(newSeg); // Re-Save segment edited with owner id (this will update the segment with the owner's id)
+			return new ResponseEntity<String>("Added new user's segment message: " + newSeg.getMessage(), HttpStatus.OK);
+		}
 	}
 	
 	@PostMapping("/editSegment")
