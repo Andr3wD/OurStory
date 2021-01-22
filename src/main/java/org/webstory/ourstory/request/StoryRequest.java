@@ -1,8 +1,11 @@
 package org.webstory.ourstory.request;
 
-public class SegmentRequest {
+public class StoryRequest {
 	
-	public String message;
 	public String hexObjectId;
+	public String title;
+	
+	
+	
 	
 }

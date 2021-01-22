@@ -1,7 +1,9 @@
 package org.webstory.ourstory.services;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,6 +22,15 @@ public class UserService implements UserDetailsService {
 	
 	public User findByIp(String ip) {
 		return DB.findByIp(ip).get(0); // TODO handle multiple of the same IP.
+	}
+	
+	public User findById(ObjectId id) {
+		Optional<User> temp = DB.findById(id);
+		if (!temp.isEmpty()) {
+			return temp.get();
+		} else {
+			return null;	
+		}
 	}
 
 	@Override

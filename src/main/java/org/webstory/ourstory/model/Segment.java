@@ -17,6 +17,8 @@ public @Data class Segment {
 	private String message;
 
 	private ObjectId owner;
+	
+	private ObjectId parent;
 
 	private Date created = new Date();
 
