@@ -8,11 +8,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.webstory.ourstory.dao.SegmentDao;
 import org.webstory.ourstory.model.Segment;
-import org.webstory.ourstory.model.Story;
 import org.webstory.ourstory.model.User;
 import org.webstory.ourstory.request.SegmentRequest;
 import org.webstory.ourstory.response.SegmentResponse;
-import org.webstory.ourstory.services.UserService;
 
 @Service
 public class SegmentService {
