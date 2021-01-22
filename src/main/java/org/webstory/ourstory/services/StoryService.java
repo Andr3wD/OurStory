@@ -26,6 +26,16 @@ public class StoryService {
 	public Story save(Story story) {
 		return DB.save(story);
 	}
+	
+	public Story findByTitle(String title) {
+		List<Story> temp = DB.findByTitle(title);
+		System.out.println(temp.get(0));
+		if (!temp.isEmpty()) {
+			return temp.get(0); // TODO handle multiple flaged as global
+		} else {
+			return null;
+		}
+	}
 
 	public boolean delete(Story story) {
 		try {
@@ -41,6 +51,15 @@ public class StoryService {
 		Optional<Story> temp = DB.findById(id);
 		if (!temp.isEmpty()) {
 			return temp.get();
+		} else {
+			return null;
+		}
+	}
+	
+	public Story findByGlobal(Boolean bool) {
+		List<Story> temp = DB.findByGlobal(bool);
+		if (!temp.isEmpty()) {
+			return temp.get(0); // TODO handle multiple flaged as global
 		} else {
 			return null;
 		}

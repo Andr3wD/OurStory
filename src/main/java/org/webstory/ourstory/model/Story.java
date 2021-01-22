@@ -1,5 +1,6 @@
 package org.webstory.ourstory.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.bson.types.ObjectId;
@@ -20,14 +21,18 @@ public @Data class Story {
 
 	@Id
 	private ObjectId id;
-	private List<User> contributors;
-	private List<ObjectId> segments;
+	private List<ObjectId> contributors = new ArrayList<ObjectId>();
+	private List<ObjectId> segments = new ArrayList<ObjectId>();
 	private Boolean global; // Default, new stories are not global.
 	private String title;
 	
 	public Story(Boolean global, String title) {
 		this.global = global;
 		this.title = title;
+	}
+	
+	public boolean addSegment(ObjectId seg) {
+		return segments.add(seg);
 	}
 
 }

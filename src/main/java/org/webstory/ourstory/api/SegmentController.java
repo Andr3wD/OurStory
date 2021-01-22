@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.webstory.ourstory.model.Segment;
+import org.webstory.ourstory.model.Story;
 import org.webstory.ourstory.model.User;
 import org.webstory.ourstory.request.SegmentRequest;
 import org.webstory.ourstory.response.SegmentResponse;
@@ -22,6 +24,7 @@ import org.webstory.ourstory.services.SegmentService;
 import org.webstory.ourstory.services.StoryService;
 import org.webstory.ourstory.services.UserService;
 
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RequestMapping("/segment")
 @RestController
 public class SegmentController {
@@ -39,17 +42,24 @@ public class SegmentController {
 	@PostMapping("/addSegment") 
 	public ResponseEntity<?> addSegment(@RequestBody SegmentRequest requestSegment, HttpServletRequest requestInfo) {
 		// TODO Validate input.
+		Story story = storyService.findByTitle(requestSegment.storyTitle);
+		System.out.println(story.getTitle());
 		
 		// Get the client IP and validate if the user recently added to the story or not.
 		String clientIp = requestInfo.getRemoteAddr();
 		User user = userService.findByIp(clientIp);
-		Date threshold = new Date((new Date()).getTime()-1000*60*60); // Get the threshold date. 1000ms/s * 60s/min * 60min/hr = 1 hour before right now.
+		// 1000*60*
+		Date threshold = new Date((new Date()).getTime()-1000*10); // Get the threshold date. 1000ms/s * 60s/min * 60min/hr = 1 hour before right now.
 		if (user != null) { // User exists
 			Date mostRecent = userService.getRecentSegmentByPost(user).getCreated();
 			if (mostRecent.before(threshold)) { // Most recent post was before threshold (1 hour ago)
 				Segment newSeg = segmentService.requestToSegment(requestSegment); // Convert request to segment.
 				newSeg.setOwner(user.getId());
-				segmentService.save(newSeg); // Save new segment
+				newSeg.setParent(story.getId());
+				newSeg = segmentService.save(newSeg); // Save new segment
+				
+				story.addSegment(newSeg.getId());
+				storyService.save(story);
 				
 				return new ResponseEntity<String>("Added old user's segment message: " + newSeg.getMessage(), HttpStatus.OK);
 			} else {
@@ -58,6 +68,7 @@ public class SegmentController {
 			}
 		} else { // User doesn't exist
 			Segment newSeg = segmentService.requestToSegment(requestSegment); // Convert request to segment.
+			newSeg.setParent(story.getId());
 			newSeg = segmentService.save(newSeg); // Save brand new segment
 			
 			// Initialize a new User
@@ -68,6 +79,9 @@ public class SegmentController {
 			
 			newUser = userService.save(newUser); // Save new user in DB.
 			newSeg.setOwner(newUser.getId());
+			
+			story.addSegment(newSeg.getId());
+			storyService.save(story);
 			
 			segmentService.save(newSeg); // Re-Save segment edited with owner id (this will update the segment with the owner's id)
 			return new ResponseEntity<String>("Added new user's segment message: " + newSeg.getMessage(), HttpStatus.OK);

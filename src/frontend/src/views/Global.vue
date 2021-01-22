@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div class="storyArea">
-      <a>TEXT</a>
+    <div class="storyArea" v-for="(s, index) in realSegments"
+    :key="index">
+      <a>{{ s.message }}</a>
     </div>
     <div class="input-group mb-3">
 
@@ -23,21 +24,24 @@ export default {
   name: 'Global',
   data () {
     return {
+      segments: ['message1', 'message2', 'message3', 'message4', 'message5', 'message6'],
       segment: '',
       maxChars: 100,
       charsLeft: 100,
-      firstSegment: ''
+      firstSegment: '',
+      realSegments: []
     }
   },
   methods: {
     updateWordCount () {
       this.charsLeft = this.maxChars - this.segment.length
     },
-    getFirstSegment () {
-      segmentService.getFirstSegment()
+    getGlobalSegments () {
+      segmentService.getSegments('global')
         .then(
           response => {
-            this.firstSegment = response.data
+            this.realSegments = response.data
+            console.log(this.realSegments)
           }
         ).catch(e => {
 
@@ -45,7 +49,7 @@ export default {
     }
   },
   mounted () {
-    this.getFirstSegment()
+    this.getGlobalSegments()
   }
 }
 </script>

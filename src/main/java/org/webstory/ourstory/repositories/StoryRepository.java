@@ -12,6 +12,7 @@ import org.webstory.ourstory.model.Story;
  */
 public interface StoryRepository extends MongoRepository<Story, ObjectId> {
 
+	// TODO change to 'findByTitle' eventually
 	List<Story> findByGlobal(Boolean global); // MongoDB just does its magic here to turn this into an actual working method behind the scenes.
-	
+	List<Story> findByTitle(String title);
 }

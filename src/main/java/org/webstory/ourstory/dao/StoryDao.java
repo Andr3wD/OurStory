@@ -21,6 +21,7 @@ public interface StoryDao {
 	
 	Optional<Story> findById(ObjectId id);
 	List<Story> findByGlobal(Boolean global);
+	List<Story> findByTitle(String title);
 	List<Story> getAll();
 	
 }
