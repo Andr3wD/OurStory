@@ -1,9 +1,9 @@
 <template>
   <div>
-    <div class="storyArea" v-for="(s, index) in realSegments"
+    <span class="storyArea" v-for="(s, index) in segments"
     :key="index">
-      <a>{{ s.message }}</a>
-    </div>
+      <story-text @mouseenter="hovered = index + 1" @mouseleave="hovered = 0" :class="{ active: hovered == index + 1 }">{{ s }} </story-text>
+    </span>
     <div class="input-group mb-3">
 
     <input @keyup="updateWordCount()" v-model="segment" type="text" class="form-control" placeholder="Text">
@@ -11,8 +11,8 @@
         <span class="input-group-text"> > </span>
       </div>
     </div>
-    <span>Characters Left: {{charsLeft}}</span>
-    <span>First Segment: {{this.firstSegment}} </span>
+    <div>Characters Left: {{charsLeft}}</div>
+    <span v-if="hovered != 0">Segment added by: (NAME) </span>
   </div>
 </template>
 
@@ -29,7 +29,8 @@ export default {
       maxChars: 100,
       charsLeft: 100,
       firstSegment: '',
-      realSegments: []
+      realSegments: [],
+      hovered: 0
     }
   },
   methods: {
@@ -57,6 +58,10 @@ export default {
 <style>
 .storyArea {
   height: 100%;
+}
+
+.active {
+  color: red;
 }
 
 </style>
