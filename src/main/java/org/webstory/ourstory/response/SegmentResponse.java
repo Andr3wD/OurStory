@@ -7,5 +7,6 @@ public @Data class SegmentResponse {
 	public String message;
 	public String hexObjectId;
 	public String username;
+	public String date;
 
 }

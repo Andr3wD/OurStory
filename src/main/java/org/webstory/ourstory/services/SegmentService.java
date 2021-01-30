@@ -61,6 +61,7 @@ public class SegmentService {
 		response.setHexObjectId(id.toHexString());
 		response.setMessage(seg.getMessage());
 		response.setUsername(user.getUsername());
+		response.setDate(seg.getCreated().toString());
 
 		return response;
 	}

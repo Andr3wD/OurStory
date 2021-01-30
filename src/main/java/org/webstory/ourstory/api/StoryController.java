@@ -44,7 +44,9 @@ public class StoryController {
 		if (title.equals("global")) {
 			// TODO break into 3 lines
 			// TODO LOOKAT change SegmentResponse return to StoryResponse
-			List<SegmentResponse> responses = storyService.convertToResponse(storyService.findByTitle("global").getId()).getSegments();
+			
+			ObjectId globalStory = storyService.findByTitle("global").getId(); // Get ID of global story
+			List<SegmentResponse> responses = storyService.convertToSegmentResponse(globalStory);
 			return new ResponseEntity<List<SegmentResponse>>(responses, HttpStatus.OK);
 		}
 		return null;

@@ -85,6 +85,17 @@ public class StoryService {
 		storyR.setParticipants(participants);
 		return storyR;
 	}
+	
+	public List<SegmentResponse> convertToSegmentResponse(ObjectId id) {
+		Story story = findById(id);
+		List<ObjectId> segments = story.getSegments();
+		List<SegmentResponse> responses = new ArrayList<>();
+		for (ObjectId seg : segments) {
+			SegmentResponse response = segmentService.convertToResponse(seg);
+			responses.add(response);
+		}
+		return responses;
+	}
 
 	/**
 	 * USE SPARINGLY
