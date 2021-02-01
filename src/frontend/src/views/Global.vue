@@ -2,6 +2,7 @@
   <div>
     <span class="storyArea" v-for="(s, index) in realSegments"
     :key="index">
+<<<<<<< HEAD
       <story-text :id="'popover-'+index" @mouseenter="hovered = index + 1" @mouseleave="hovered = 0" :class="{ active: hovered == index + 1 }">
         {{s.message}}
       </story-text>
@@ -10,6 +11,9 @@
           <template #title>{{s.username}}</template>
           {{s.date}}
       </b-popover>
+=======
+      <story-text @mouseenter="hovered = index + 1" @mouseleave="hovered = 0" :class="{ active: hovered == index + 1 }">{{ s.message }} </story-text>
+>>>>>>> 6267079 (worked on frontend segment display)
     </span>
     <div class="input-group mb-3">
 
@@ -19,7 +23,11 @@
       </div>
     </div>
     <div>Characters Left: {{charsLeft}}</div>
+<<<<<<< HEAD
     <!-- <span v-if="hovered != 0">Segment added by: (NAME) </span> -->
+=======
+    <span v-if="hovered != 0">Segment added by: {{hovered}} </span>
+>>>>>>> 6267079 (worked on frontend segment display)
   </div>
 </template>
 

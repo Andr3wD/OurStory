@@ -29,7 +29,6 @@ public class StoryService {
 	
 	public Story findByTitle(String title) {
 		List<Story> temp = DB.findByTitle(title);
-		System.out.println(temp.get(0));
 		if (!temp.isEmpty()) {
 			return temp.get(0); // TODO handle multiple flaged as global
 		} else {
