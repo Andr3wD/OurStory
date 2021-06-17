@@ -57,9 +57,5 @@ public class StoryController {
 //			List<SegmentResponse> responses = storyR.getSegments();
 //			return new ResponseEntity<List<SegmentResponse>>(responses, HttpStatus.OK);
 //		}
-		
-		
-		
-		
 	}
 }

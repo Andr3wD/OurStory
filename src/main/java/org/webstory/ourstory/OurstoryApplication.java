@@ -21,6 +21,7 @@ public class OurstoryApplication {
 	@EventListener(ApplicationReadyEvent.class)
 	public void makeGlobalStory() {
 		if (storyService.findByTitle("global") == null) {
+			System.out.println("Adding global to DB");
 			Story globalStory = new Story(true, "global");
 			storyService.save(globalStory);
 		}

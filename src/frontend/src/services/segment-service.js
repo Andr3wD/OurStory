@@ -6,6 +6,10 @@ class SegmentService {
   getSegments (name) {
     return axios.get(APIURL + '/story/getSegments', { params: { title: name } })
   }
+
+  submitSegment (message, storyTitle) {
+    return axios.post(APIURL + '/segment/addSegment', { message: message, storyTitle: storyTitle })
+  }
 }
 
 export default new SegmentService()

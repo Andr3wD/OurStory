@@ -42,6 +42,7 @@ public class SegmentController {
 	@PostMapping("/addSegment") 
 	public ResponseEntity<?> addSegment(@RequestBody SegmentRequest requestSegment, HttpServletRequest requestInfo) {
 		// TODO Validate input.
+		System.out.println(requestSegment.storyTitle);
 		Story story = storyService.findByTitle(requestSegment.storyTitle);
 		System.out.println(story.getTitle());
 		

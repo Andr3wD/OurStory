@@ -2,32 +2,17 @@
   <div>
     <span class="storyArea" v-for="(s, index) in realSegments"
     :key="index">
-<<<<<<< HEAD
-      <story-text :id="'popover-'+index" @mouseenter="hovered = index + 1" @mouseleave="hovered = 0" :class="{ active: hovered == index + 1 }">
-        {{s.message}}
-      </story-text>
-
-      <b-popover placement="top" :target="'popover-'+index" triggers="hover focus top">
-          <template #title>{{s.username}}</template>
-          {{s.date}}
-      </b-popover>
-=======
-      <story-text @mouseenter="hovered = index + 1" @mouseleave="hovered = 0" :class="{ active: hovered == index + 1 }">{{ s.message }} </story-text>
->>>>>>> 6267079 (worked on frontend segment display)
+      <div @mouseenter="hovered = index" @mouseleave="hovered = -1" :class="{active: hovered == index}" class="ml-2" style="">{{ s.message }}</div>
     </span>
     <div class="input-group mb-3">
 
-    <input @keyup="updateWordCount()" v-model="segment" type="text" class="form-control" placeholder="Text">
+    <input @submit="submitMessage()" v-model="currentSegment" type="text" class="form-control" placeholder="Text">
       <div class="input-group-append">
-        <span class="input-group-text"> > </span>
+        <button class="input-group-text" @click="submitMessage()"> > </button>
       </div>
     </div>
-    <div>Characters Left: {{charsLeft}}</div>
-<<<<<<< HEAD
-    <!-- <span v-if="hovered != 0">Segment added by: (NAME) </span> -->
-=======
-    <span v-if="hovered != 0">Segment added by: {{hovered}} </span>
->>>>>>> 6267079 (worked on frontend segment display)
+    <div>Characters Left: {{this.maxChars - this.currentSegment.length}}</div>
+    <span v-if="hovered != -1">Segment added by: {{realSegments[hovered].username}} at {{realSegments[hovered].date}}</span>
   </div>
 </template>
 
@@ -39,18 +24,26 @@ export default {
   name: 'Global',
   data () {
     return {
-      segments: ['message1', 'message2', 'message3', 'message4', 'message5', 'message6'],
-      segment: '',
+      currentSegment: '',
       maxChars: 100,
       charsLeft: 100,
-      firstSegment: '',
       realSegments: [],
-      hovered: 0
+      hovered: -1
     }
   },
   methods: {
-    updateWordCount () {
-      this.charsLeft = this.maxChars - this.segment.length
+    submitMessage (e) {
+      console.log('submitting message')
+      // Submit the segment to the backend, with story title 'global'
+      segmentService.submitSegment(this.currentSegment, 'global').then(
+        response => {
+          console.log(response)
+          if (response.status === 200) { // OK
+            // Update the whole story.
+            this.getGlobalSegments()
+          }
+        }
+      )
     },
     getGlobalSegments () {
       segmentService.getSegments('global')
@@ -73,6 +66,7 @@ export default {
 <style>
 .storyArea {
   height: 100%;
+  display: inline-block;
 }
 
 .active {

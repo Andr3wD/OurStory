@@ -6,8 +6,7 @@ import lombok.Data;
 
 public @Data class StoryResponse {
 	
-	private List<String> entries;
-	private List<String> participants;
 	private List<SegmentResponse> segments;
+	private String title;
 
 }

@@ -68,20 +68,14 @@ public class StoryService {
 		Story story = findById(id);
 		List<ObjectId> segments = story.getSegments();
 		List<SegmentResponse> responses = new ArrayList<SegmentResponse>();
-		List<String> entries = new ArrayList<String>();
-		List<String> participants = new ArrayList<String>();
 		StoryResponse storyR = new StoryResponse();
 
 		for (ObjectId seg : segments) {
 			SegmentResponse response = segmentService.convertToResponse(seg);
 			responses.add(response);
-			entries.add(response.getMessage());
-			participants.add(response.getUsername());
 
 		}
 		storyR.setSegments(responses);
-		storyR.setEntries(entries);
-		storyR.setParticipants(participants);
 		return storyR;
 	}
 	
