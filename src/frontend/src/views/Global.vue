@@ -1,18 +1,38 @@
 <template>
   <div>
-    <span class="storyArea" v-for="(s, index) in realSegments"
-    :key="index">
-      <div @mouseenter="hovered = index" @mouseleave="hovered = -1" :class="{active: hovered == index}" class="ml-2" style="">{{ s.message }}</div>
-    </span>
-    <div class="input-group mb-3">
+    <div class="mainBox">
+      <div class="storyArea">
+        <b-skeleton-wrapper :loading="realSegments.length == 0">
 
-    <input @submit="submitMessage()" v-model="currentSegment" type="text" class="form-control" placeholder="Text">
-      <div class="input-group-append">
-        <button class="input-group-text" @click="submitMessage()"> > </button>
+          <template #loading>
+            <b-skeleton width="100%"></b-skeleton>
+            <b-skeleton width="60%"></b-skeleton>
+            <b-skeleton width="80%"></b-skeleton>
+            <b-skeleton width="100%"></b-skeleton>
+          </template>
+
+          <span v-b-popover.hover.top="realSegments[hovered].date" :title="realSegments[hovered].username" @mouseenter="hovered = s.id" @mouseleave="hovered = -1" :class="{active: hovered == s.id}" class="storySegment" v-for="(s, index) in generateSegmentArray()" :key="index">
+            <div class="ml-2" style="">{{ s.word }}</div>
+          </span>
+
+        </b-skeleton-wrapper>
       </div>
+
+      <div class="input-group" style="width:60%;margin:auto">
+        <b-form-textarea :state="currentSegment.length <= maxChars" @submit="submitMessage()" v-model="currentSegment" type="text" class="form-control" :placeholder="maxChars + ' Characters Maximum'" :lazy-formatter="messageFormatter"/>
+        <div class="input-group-append">
+          <button class="input-group-text" @click="submitMessage()">
+            <b-icon icon="arrow-right" aria-hidden="true"></b-icon>
+          </button>
+        </div>
+
+      </div>
+      <!-- Progress bar for characters left -->
+      <b-progress show-value class="charCountBar" :value="this.currentSegment.length" :max="maxChars"></b-progress>
+      <!-- Text for characters left -->
+      <div>Characters Left: {{this.maxChars - this.currentSegment.length}}</div>
+      <span v-if="hovered != -1">Segment added by: {{realSegments[hovered].username}} at {{realSegments[hovered].date}}</span>
     </div>
-    <div>Characters Left: {{this.maxChars - this.currentSegment.length}}</div>
-    <span v-if="hovered != -1">Segment added by: {{realSegments[hovered].username}} at {{realSegments[hovered].date}}</span>
   </div>
 </template>
 
@@ -45,6 +65,20 @@ export default {
         }
       )
     },
+    messageFormatter (val) {
+      // TODO Handle formatting the message here
+    },
+    generateSegmentArray () {
+      var newArr = []
+      var i = 0
+      for (const s of this.realSegments) {
+        for (const word of s.message.split(' ')) {
+          newArr.push({ word: word, id: i })
+        }
+        i++
+      }
+      return newArr
+    },
     getGlobalSegments () {
       segmentService.getSegments('global')
         .then(
@@ -64,9 +98,30 @@ export default {
 </script>
 
 <style>
+
+.charCountBar {
+  width: 39%;
+  margin: auto;
+  margin-top: 5px;
+}
+
+.storySegment {
+  display: inline-block;
+}
+
 .storyArea {
   height: 100%;
   display: inline-block;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  font-size: 1.2em;
+  width: 60%;
+}
+
+.mainBox {
+  width: 100%;
+  text-align: center;
+  margin: auto;
 }
 
 .active {

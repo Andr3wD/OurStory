@@ -11,20 +11,24 @@
     </div>
     <h2>The Team</h2>
     <!-- https://www.w3schools.com/howto/howto_css_about_page.asp -->
-    <div class="row justify-content-center">
-      <div class="column">
-        <!-- https://bootstrap-vue.org/docs/components/card -->
-        <b-card no-body class="developerCard">
-          <b-card-title title-tag="h2">Andrew Day</b-card-title>
-          <b-card-img top class="developerImage" src="https://mdbcdn.b-cdn.net/img/Photos/Others/images/76.jpg"/>
-          <b-card-body>
-            <a class="developerGithubButton" href="https://github.com/Andr3wD">
-              <b-icon class="githubIcon" icon="github" aria-hidden="true"></b-icon>
-            </a>
-          </b-card-body>
-        </b-card>
-      </div>
-    </div>
+    <b-container>
+      <b-row cols="3">
+        <b-col>
+          <!-- https://bootstrap-vue.org/docs/components/card -->
+          <!-- TODO: duplicate for all devs eventually -->
+          <b-card no-body class="developerCard">
+            <b-card-title title-tag="h2">Andrew Day</b-card-title>
+            <!-- Placeholder image. TODO eventually change. -->
+            <b-card-img top class="developerImage" src="https://mdbcdn.b-cdn.net/img/Photos/Others/images/76.jpg"/>
+            <b-card-body>
+              <a class="developerGithubButton" href="https://github.com/Andr3wD">
+                <b-icon class="githubIcon" icon="github" aria-hidden="true"></b-icon>
+              </a>
+            </b-card-body>
+          </b-card>
+        </b-col>
+      </b-row>
+    </b-container>
   </div>
 </template>
 
