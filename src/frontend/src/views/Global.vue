@@ -11,7 +11,7 @@
             <b-skeleton width="100%"></b-skeleton>
           </template>
 
-          <span v-b-popover.hover.top="realSegments[hovered].date" :title="realSegments[hovered].username" @mouseenter="hovered = s.id" @mouseleave="hovered = -1" :class="{active: hovered == s.id}" class="storySegment" v-for="(s, index) in generateSegmentArray()" :key="index">
+          <span v-b-popover.hover.top="realSegments[s.id].date" :title="realSegments[s.id].username" @mouseenter="hovered = s.id" @mouseleave="hovered = -1" :class="{active: hovered == s.id}" class="storySegment" v-for="(s, index) in generateSegmentArray()" :key="index">
             <div class="ml-2" style="">{{ s.word }}</div>
           </span>
 
@@ -31,7 +31,7 @@
       <b-progress show-value class="charCountBar" :value="this.currentSegment.length" :max="maxChars"></b-progress>
       <!-- Text for characters left -->
       <div>Characters Left: {{this.maxChars - this.currentSegment.length}}</div>
-      <span v-if="hovered != -1">Segment added by: {{realSegments[hovered].username}} at {{realSegments[hovered].date}}</span>
+      <!-- <span v-if="hovered != -1">Segment added by: {{realSegments[hovered].username}} at {{realSegments[hovered].date}}</span> -->
     </div>
   </div>
 </template>
@@ -77,6 +77,7 @@ export default {
         }
         i++
       }
+      console.log(newArr)
       return newArr
     },
     getGlobalSegments () {
