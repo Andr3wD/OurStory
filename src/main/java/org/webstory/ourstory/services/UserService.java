@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.webstory.ourstory.dao.UserDao;
 import org.webstory.ourstory.model.Segment;
@@ -25,11 +26,20 @@ public class UserService implements UserDetailsService {
 	@Autowired
 	SegmentService segmentService;
 	
+	@Autowired
+	PasswordEncoder passwordEncoder;
+	
 	public User save(User user) {
+		// Assume that the password isn't encoded.
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
 		return DB.save(user);
 	}
-
 	
+	public void delete(User user) {
+		// TODO handle when user doesn't exist.
+		DB.delete(user);
+	}
+
 	public User findByIp(String ip) {
 		List<User> list = DB.findByIp(ip);
 		if (list.size() == 0) {
@@ -73,6 +83,8 @@ public class UserService implements UserDetailsService {
 		List<User> found = DB.findByUsername(username);
 		if (found.size() > 1 && !found.get(0).getUsername().equals("Anonymous")) {
 			throw new UsernameNotFoundException("Duplicate Usernames!");
+		} else if (found.size() == 0) {
+			throw new UsernameNotFoundException("No user with that username!");
 		}
 		return found.get(0);
 	}

@@ -32,8 +32,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// TODO check out proper spring boot security use to work with PreAuthorize annotation.
 		http.authorizeRequests().anyRequest().permitAll()
 		.and()
-//		.formLogin() // Auto generate login page for now. TODO make our own.
-//		.and()
+		.formLogin() // Auto generate login page for now. TODO make our own.
+		.and()
 		.cors().disable()
 		.csrf().disable();
 	}

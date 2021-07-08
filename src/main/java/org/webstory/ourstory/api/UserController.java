@@ -15,13 +15,14 @@ import org.webstory.ourstory.services.UserService;
 @RestController
 public class UserController {
 	
+	@Autowired
+	UserService userService;
+	
 	@GetMapping()
 	@PreAuthorize("permitAll()")
 	public ResponseEntity<?> testUsers() {
 		return new ResponseEntity<String>("Test", HttpStatus.I_AM_A_TEAPOT);
 	}
 
-	@Autowired
-	UserService userService;
 	
 }

@@ -28,29 +28,27 @@ import org.webstory.ourstory.services.UserService;
 @RequestMapping("/segment")
 @RestController
 public class SegmentController {
-	
-	
+
 	@Autowired
 	StoryService storyService;
-	
+
 	@Autowired
 	SegmentService segmentService;
-	
+
 	@Autowired
 	UserService userService;
-	
-	@PostMapping("/addSegment") 
+
+	@PostMapping("/addSegment")
 	public ResponseEntity<?> addSegment(@RequestBody SegmentRequest requestSegment, HttpServletRequest requestInfo) {
 		// TODO Validate input.
 		System.out.println(requestSegment.storyTitle);
 		Story story = storyService.findByTitle(requestSegment.storyTitle);
 		System.out.println(story.getTitle());
-		
+
 		// Get the client IP and validate if the user recently added to the story or not.
 		String clientIp = requestInfo.getRemoteAddr();
 		User user = userService.findByIp(clientIp);
-		// 1000*60*
-		Date threshold = new Date((new Date()).getTime()-1000*10); // Get the threshold date. 1000ms/s * 60s/min * 60min/hr = 1 hour before right now.
+		Date threshold = new Date((new Date()).getTime() - 1000 * 10); // Get the threshold date. 1000ms/s * 60s/min * 60min/hr = 1 hour before right now.
 		if (user != null) { // User exists
 			Date mostRecent = userService.getRecentSegmentByPost(user).getCreated();
 			if (mostRecent.before(threshold)) { // Most recent post was before threshold (1 hour ago)
@@ -58,10 +56,10 @@ public class SegmentController {
 				newSeg.setOwner(user.getId());
 				newSeg.setParent(story.getId());
 				newSeg = segmentService.save(newSeg); // Save new segment
-				
+
 				story.addSegment(newSeg.getId());
 				storyService.save(story);
-				
+
 				return new ResponseEntity<String>("Added old user's segment message: " + newSeg.getMessage(), HttpStatus.OK);
 			} else {
 				System.out.println("Attempt to post too early from IP: " + clientIp);
@@ -71,56 +69,56 @@ public class SegmentController {
 			Segment newSeg = segmentService.requestToSegment(requestSegment); // Convert request to segment.
 			newSeg.setParent(story.getId());
 			newSeg = segmentService.save(newSeg); // Save brand new segment
-			
+
 			// Initialize a new User
 			User newUser = new User();
 			newUser.setIp(clientIp);
 			System.out.println(newSeg.getId());
 			newUser.addSegment(newSeg.getId());
-			
+
 			newUser = userService.save(newUser); // Save new user in DB.
 			newSeg.setOwner(newUser.getId());
-			
+
 			story.addSegment(newSeg.getId());
 			storyService.save(story);
-			
+
 			segmentService.save(newSeg); // Re-Save segment edited with owner id (this will update the segment with the owner's id)
 			return new ResponseEntity<String>("Added new user's segment message: " + newSeg.getMessage(), HttpStatus.OK);
 		}
 	}
-	
+
 	@PostMapping("/editSegment")
 	public ResponseEntity<?> editSegment(@RequestBody SegmentRequest requestSegment) {
 		// TODO Validate input.
-		
+
 		ObjectId id = new ObjectId(requestSegment.hexObjectId);
 		String segNew = requestSegment.message;
 		Segment seg = segmentService.findById(id);
-		
+
 		seg.setMessage(segNew);
 		segmentService.save(seg);
-		
+
 		return new ResponseEntity<String>("Edited your segment named: " + seg.getMessage(), HttpStatus.OK);
 	}
-	
+
 	@DeleteMapping("/deleteSegment")
 	public ResponseEntity<?> deleteSegment(@RequestBody SegmentRequest requestSegment) {
 		// TODO Validate input.
-		
+
 		ObjectId id = new ObjectId(requestSegment.hexObjectId);
 		Segment seg = segmentService.findById(id);
-		
+
 		segmentService.delete(seg);
-		
+
 		return new ResponseEntity<String>("Deleted segment with message: " + seg.getMessage(), HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/getSegment")
 	public ResponseEntity<?> getSegment(@RequestBody SegmentRequest segmentRequest) {
 		ObjectId segId = new ObjectId(segmentRequest.hexObjectId);
-			SegmentResponse response = segmentService.convertToResponse(segId);
-			
+		SegmentResponse response = segmentService.convertToResponse(segId);
+
 		return new ResponseEntity<SegmentResponse>(response, HttpStatus.OK);
-		
+
 	}
 }

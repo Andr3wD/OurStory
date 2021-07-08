@@ -8,9 +8,9 @@ import org.webstory.ourstory.model.User;
 
 public interface UserDao {
 
-	User save(User story);
-	User insert(User story);
-	void delete(User story);
+	User save(User user);
+	User insert(User user);
+	void delete(User user);
 	long size();
 	
 	

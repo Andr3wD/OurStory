@@ -1,26 +1,37 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-      <a class="navbar-brand">OurStory</a>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mr-auto">
-          <li class="mr-3 nav-item active">
-            <b-button to="/" replace>Home</b-button>
-          </li>
-          <li class="mr-3 nav-item active">
-            <b-button to="/about" replace>About</b-button>
-          </li>
-          <li class="mr-3 nav-item active">
-            <b-button to="/global" replace>Global</b-button>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <b-navbar toggleable="lg" variant="dark" type="dark">
+      <b-navbar-brand href="/">OurStory</b-navbar-brand>
+
+      <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
+
+      <b-collapse id="nav-collapse" is-nav>
+
+        <b-navbar-nav>
+          <b-button class="mr-3" to="/" replace>Home</b-button>
+          <b-button class="mr-3" to="/about" replace>About</b-button>
+          <b-button class="mr-3" to="/global" replace>Global</b-button>
+          <b-button class="mr-3" to="/admin" replace>Admin</b-button>
+        </b-navbar-nav>
+
+        <b-navbar-nav class="ml-auto">
+          <b-button class="mr-3" to="/login" replace>Login/Register</b-button>
+        </b-navbar-nav>
+
+      </b-collapse>
+    </b-navbar>
     <router-view/>
   </div>
 </template>
 
 <script>
+
+export default {
+  name: 'App',
+  created () {
+    console.log(this.$store.state.auth.loggedIn)
+  }
+}
 
 </script>
 
@@ -32,6 +43,7 @@
   text-align: center;
   background-color: whitesmoke;
   color: #2c3e50;
+  height: 100vh;
 }
 
 router-link {
