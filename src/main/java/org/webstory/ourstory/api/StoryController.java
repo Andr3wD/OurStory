@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.webstory.ourstory.request.StoryRequest;
 import org.webstory.ourstory.response.SegmentResponse;
-import org.webstory.ourstory.response.StoryResponse;
 import org.webstory.ourstory.services.SegmentService;
 import org.webstory.ourstory.services.StoryService;
 

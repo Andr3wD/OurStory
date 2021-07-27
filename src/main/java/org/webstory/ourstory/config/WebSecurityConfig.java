@@ -32,10 +32,11 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		// TODO check out proper spring boot security use to work with PreAuthorize annotation.
 		http.authorizeRequests().anyRequest().permitAll()
 		.and()
-		.formLogin() // Auto generate login page for now. TODO make our own.
+		.formLogin().loginPage("/login").loginProcessingUrl("/loginAuth") // /loginAuth is used as loginProcessingUrl because vue needs a different url than what's in the router.
 		.and()
-		.cors().disable()
-		.csrf().disable();
+		.logout().logoutSuccessUrl("/")
+		.and()
+		.cors().disable().csrf().disable();
 	}
 
 	@Bean

@@ -9,30 +9,8 @@ if (key) {
 
 export const auth = {
   state: initState,
+  namespaced: true,
   mutations: {
-  },
-  actions: {
-    login ({ commit }, user) {
-      return AuthService.submitLogin(user).then(
-        response => {
-          console.log(response.data)
-          // TODO get key (session id) from cookies and commit('loginSuccess',key)
-          return Promise.resolve('key here')
-        },
-        error => {
-          commit('loginFailure') // commit a mutation, specifically the 'loginFailure' mutation, to occur.
-          return Promise.reject(error)
-        }
-      )
-    },
-    logout ({ commit }) {
-
-    },
-    register ({ commit }) {
-
-    }
-  },
-  modules: {
     loginSuccess (state, key) {
       state.loggedIn = true
       state.key = key
@@ -40,6 +18,26 @@ export const auth = {
     loginFailure (state) {
       state.loggedIn = false
       state.key = null
+    }
+  },
+  actions: {
+    login ({ commit }, user) {
+      return AuthService.submitLogin(user).then(
+        response => {
+          console.log(response)
+          // TODO get key (session id) from cookies and commit('loginSuccess',key)
+          return Promise.resolve('key here')
+        }).catch(e => {
+        console.log(e)
+        commit('loginFailure') // commit a mutation, specifically the 'loginFailure' mutation, to occur.
+        return Promise.reject(e)
+      })
+    },
+    logout ({ commit }) {
+
+    },
+    register ({ commit }) {
+
     }
   }
 }

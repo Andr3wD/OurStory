@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <b-form class="login-form" @onSubmit="onSubmit">
+    <b-form class="login-form" @submit="onSubmit">
       <b-form-group label="Username">
         <b-form-input placeholder="Username Here" v-model="form.username" required/>
       </b-form-group>
@@ -15,7 +15,11 @@
 </template>
 
 <script>
+
+import AuthService from '../services/auth-service'
+
 export default {
+  name: 'Login',
   data () {
     return {
       form: {
@@ -27,16 +31,33 @@ export default {
   },
   methods: {
     onSubmit (e) {
+      e.preventDefault()
+      console.log('button clicked')
       // TODO make axios request to backend for login with username and password as params.
-      this.$store.dispatch('auth/login', this.form).then(
+      AuthService.submitLogin(this.form).then(
         response => {
           // Redirect to home page.
+          console.log('INSIDe')
         },
         error => {
+          console.log('ERR')
           // Show error feedback message.
+          console.log(error)
           this.feedback = error.data
         }
       )
+      // this.$store.dispatch('auth/login', this.form).then(
+      //   response => {
+      //     // Redirect to home page.
+      //     console.log('INSIDe')
+      //   },
+      //   error => {
+      //     console.log('ERR')
+      //     // Show error feedback message.
+      //     console.log(error)
+      //     this.feedback = error.data
+      //   }
+      // )
     }
   }
 
