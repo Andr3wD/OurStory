@@ -15,7 +15,8 @@
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">
-          <b-button class="mr-3" to="/login" replace>Login/Register</b-button>
+          <b-button class="mr-3" to="/login" v-if="!this.$store.state.auth.loggedIn" replace>Login/Register</b-button>
+          <b-button class="mr-3" @click="logoutButton" v-if="this.$store.state.auth.loggedIn" replace>Logout</b-button>
         </b-navbar-nav>
 
       </b-collapse>
@@ -29,7 +30,23 @@
 export default {
   name: 'App',
   created () {
+    console.log('auth')
     console.log(this.$store.state.auth.loggedIn)
+  },
+  methods: {
+    logoutButton (e) {
+      console.log('logout')
+      this.$store.dispatch('auth/logout').then(
+        response => {
+          // Redirect to home page.
+          console.log('INSIDe')
+        },
+        error => {
+          console.log('ERR INSIDE')
+          console.log(error)
+        }
+      )
+    }
   }
 }
 

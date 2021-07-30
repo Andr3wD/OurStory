@@ -11,7 +11,7 @@
             <b-skeleton width="100%"></b-skeleton>
           </template>
 
-          <span v-b-popover.hover.top="realSegments[s.id].date" :title="realSegments[s.id].username" @mouseenter="hovered = s.id" @mouseleave="hovered = -1" :class="{active: hovered == s.id}" class="storySegment" v-for="(s, index) in generateSegmentArray()" :key="index">
+          <span v-b-popover.hover.top="realSegments[s.id].date" :title="realSegments[s.id].username" @mouseenter="hovered = s.id" @mouseleave="hovered = -1" :class="{active: hovered == s.id}" class="storySegment" v-for="(s, index) in this.segmentArray" :key="index">
             <div class="ml-2" style="">{{ s.word }}</div>
           </span>
 
@@ -19,7 +19,7 @@
       </div>
 
       <div class="input-group" style="width:60%;margin:auto">
-        <b-form-textarea :state="currentSegment.length <= maxChars" @submit="submitMessage()" v-model="currentSegment" type="text" class="form-control" :placeholder="maxChars + ' Characters Maximum'" :lazy-formatter="messageFormatter"/>
+        <b-form-textarea :state="currentSegment.length <= maxChars" @submit="submitMessage()" v-model="currentSegment" type="text" class="form-control" :placeholder="maxChars + ' Characters Maximum'" :lazy-formatter="true"/>
         <div class="input-group-append">
           <button class="input-group-text" @click="submitMessage()">
             <b-icon icon="arrow-right" aria-hidden="true"></b-icon>
@@ -48,7 +48,8 @@ export default {
       maxChars: 100,
       charsLeft: 100,
       realSegments: [],
-      hovered: -1
+      hovered: -1,
+      segmentArray: null
     }
   },
   methods: {
@@ -86,6 +87,7 @@ export default {
           response => {
             this.realSegments = response.data
             console.log(this.realSegments)
+            this.segmentArray = this.generateSegmentArray()
           }
         ).catch(e => {
 

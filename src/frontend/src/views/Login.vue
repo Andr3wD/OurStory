@@ -16,8 +16,6 @@
 
 <script>
 
-import AuthService from '../services/auth-service'
-
 export default {
   name: 'Login',
   data () {
@@ -26,38 +24,25 @@ export default {
         username: '',
         password: ''
       },
-      feedback: 'TEST TODO REMOVE'
+      feedback: ''
     }
   },
   methods: {
     onSubmit (e) {
       e.preventDefault()
-      console.log('button clicked')
-      // TODO make axios request to backend for login with username and password as params.
-      AuthService.submitLogin(this.form).then(
+
+      this.$store.dispatch('auth/login', this.form).then(
         response => {
           // Redirect to home page.
-          console.log('INSIDe')
+          this.$router.push('/')
+          console.log('Successfully logged in')
         },
         error => {
-          console.log('ERR')
+          console.log('ERR INSIDE')
           // Show error feedback message.
-          console.log(error)
-          this.feedback = error.data
+          this.feedback = error.data.message
         }
       )
-      // this.$store.dispatch('auth/login', this.form).then(
-      //   response => {
-      //     // Redirect to home page.
-      //     console.log('INSIDe')
-      //   },
-      //   error => {
-      //     console.log('ERR')
-      //     // Show error feedback message.
-      //     console.log(error)
-      //     this.feedback = error.data
-      //   }
-      // )
     }
   }
 
