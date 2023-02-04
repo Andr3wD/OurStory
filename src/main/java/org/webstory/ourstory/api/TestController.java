@@ -26,7 +26,7 @@ public class TestController {
 
 	@GetMapping("/t/{name}")
 	public ResponseEntity<?> testEndpoint(@RequestBody Segment s, @PathVariable("name") String name) {
-		storyService.save(new Story(true, name));
+		storyService.save(new Story(Story.StoryType.FRONT_PAGE, name));
 
 		return new ResponseEntity<String>("Return Stuff", HttpStatus.OK);
 	}

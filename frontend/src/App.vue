@@ -11,7 +11,7 @@
           <b-button class="mr-3" to="/" replace>Home</b-button>
           <b-button class="mr-3" to="/about" replace>About</b-button>
           <b-button class="mr-3" to="/global" replace>Global</b-button>
-          <b-button class="mr-3" to="/admin" replace>Admin</b-button>
+          <b-button class="mr-3" to="/admin" v-if="this.$store.state.auth.userData.roles.isAdmin" replace>Admin</b-button>
         </b-navbar-nav>
 
         <b-navbar-nav class="ml-auto">

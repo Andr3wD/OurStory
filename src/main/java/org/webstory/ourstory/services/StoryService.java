@@ -55,8 +55,8 @@ public class StoryService {
 		}
 	}
 	
-	public Story findByGlobal(Boolean bool) {
-		List<Story> temp = DB.findByGlobal(bool);
+	public Story findByStoryType(Story.StoryType storyType) {
+		List<Story> temp = DB.findByStoryType(storyType);
 		if (!temp.isEmpty()) {
 			return temp.get(0); // TODO handle multiple flaged as global
 		} else {

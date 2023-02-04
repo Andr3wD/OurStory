@@ -8,6 +8,7 @@ import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,19 +40,25 @@ public class SegmentController {
 	UserService userService;
 
 	@PostMapping("/addSegment")
-	public ResponseEntity<?> addSegment(@RequestBody SegmentRequest requestSegment, HttpServletRequest requestInfo) {
+	public ResponseEntity<?> addSegment(@RequestBody SegmentRequest requestSegment, HttpServletRequest request, UsernamePasswordAuthenticationToken p) {
 		// TODO Validate input.
 		System.out.println(requestSegment.storyTitle);
 		Story story = storyService.findByTitle(requestSegment.storyTitle);
 		System.out.println(story.getTitle());
 
 		// Get the client IP and validate if the user recently added to the story or not.
-		String clientIp = requestInfo.getRemoteAddr();
-		User user = userService.findByIp(clientIp);
+		String clientIp = request.getRemoteAddr();
+		User user;
+		if (p == null) {
+			user = userService.findByIp(clientIp);
+		} else {
+			user = (User) p.getPrincipal();
+		}
+		
 		Date threshold = new Date((new Date()).getTime() - 1000 * 10); // Get the threshold date. 1000ms/s * 60s/min * 60min/hr = 1 hour before right now.
 		if (user != null) { // User exists
-			Date mostRecent = userService.getRecentSegmentByPost(user).getCreated();
-			if (mostRecent.before(threshold)) { // Most recent post was before threshold (1 hour ago)
+			Segment mostRecent = userService.getRecentSegmentByPost(user);
+			if (mostRecent == null || mostRecent.getCreated().before(threshold)) { // Most recent post was before threshold (1 hour ago)
 				Segment newSeg = segmentService.requestToSegment(requestSegment); // Convert request to segment.
 				newSeg.setOwner(user.getId());
 				newSeg.setParent(story.getId());
@@ -63,9 +70,10 @@ public class SegmentController {
 				return new ResponseEntity<String>("Added old user's segment message: " + newSeg.getMessage(), HttpStatus.OK);
 			} else {
 				System.out.println("Attempt to post too early from IP: " + clientIp);
-				return new ResponseEntity<String>("You posted too recently! Post again in: " + (threshold.getTime() - mostRecent.getTime()) + "ms.", HttpStatus.FORBIDDEN);
+				return new ResponseEntity<String>("You posted too recently! Post again in: " + (threshold.getTime() - mostRecent.getCreated().getTime()) + "ms.", HttpStatus.FORBIDDEN);
 			}
 		} else { // User doesn't exist
+			System.out.println("User without account added segment");
 			Segment newSeg = segmentService.requestToSegment(requestSegment); // Convert request to segment.
 			newSeg.setParent(story.getId());
 			newSeg = segmentService.save(newSeg); // Save brand new segment

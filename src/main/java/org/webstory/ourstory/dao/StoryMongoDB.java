@@ -52,8 +52,8 @@ public class StoryMongoDB implements StoryDao {
 	}
 
 	@Override
-	public List<Story> findByGlobal(Boolean global) {
-		return repo.findByGlobal(global);
+	public List<Story> findByStoryType(Story.StoryType storyType) {
+		return repo.findByStoryType(storyType);
 	}
 
 	@Override

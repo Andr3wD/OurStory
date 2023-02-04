@@ -27,11 +27,11 @@ public class OurstoryApplication {
 	
 	// Keep even for deployment.
 	@EventListener(ApplicationReadyEvent.class)
-	public void makeGlobalStory() {
-		if (storyService.findByTitle("global") == null) {
-			System.out.println("Adding global to DB");
-			Story globalStory = new Story(true, "global");
-			storyService.save(globalStory);
+	public void makeFrontPageStory() {
+		if (storyService.findByTitle("front-page") == null) {
+			System.out.println("Adding front-page to DB");
+			Story frontPageStory = new Story(Story.StoryType.FRONT_PAGE, "front-page");
+			storyService.save(frontPageStory);
 		}
 	}
 

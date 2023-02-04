@@ -2,7 +2,7 @@ import axios from 'axios'
 
 class StoryService {
   getGlobalStory () {
-    return axios.get('/story/global')
+    return axios.get('/story/front-page')
   }
 }
 

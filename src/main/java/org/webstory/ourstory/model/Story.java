@@ -19,15 +19,22 @@ import lombok.Data;
 // The @Data annotation removes all boilerplate. Getters, setters, equals, hashcode, tostring, and default constructor are automatically added behind the scenes.
 public @Data class Story {
 
+	public enum StoryType {
+		FRONT_PAGE,
+		GLOBAL,
+		PUBLIC,
+		PRIVATE
+	}
+
 	@Id
 	private ObjectId id;
 	private List<ObjectId> contributors = new ArrayList<ObjectId>();
 	private List<ObjectId> segments = new ArrayList<ObjectId>();
-	private Boolean global; // Default, new stories are not global.
+	private StoryType storyType; // Default, new stories are not global.
 	private String title;
 	
-	public Story(Boolean global, String title) {
-		this.global = global;
+	public Story(StoryType storyType, String title) {
+		this.storyType = storyType;
 		this.title = title;
 	}
 	

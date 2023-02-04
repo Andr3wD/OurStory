@@ -16,6 +16,7 @@ public class GlobalIntercepter implements HandlerInterceptor {
 	// Intercepts all requests prior to them being handled.
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		// TODO put in DB instead.
 		AdminController.requestHistory.add(new HttpRequestInstance(DateTime.now(), request.getRequestURI(), request.getRemoteAddr()));
 		return HandlerInterceptor.super.preHandle(request, response, handler);
 	}

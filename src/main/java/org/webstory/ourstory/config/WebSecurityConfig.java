@@ -54,7 +54,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		.and()
 		.formLogin().loginPage("/login").loginProcessingUrl("/loginAuth") // /loginAuth is used as loginProcessingUrl because vue needs a different url than what's in the router.
 		.successHandler(authSuccessHandler()).failureHandler(authFailureHandler())
-		.and().logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)) // Thanks to https://stackoverflow.com/questions/36354405/spring-security-disable-logout-redirect
+		.and().logout().logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)) // Thanks to https://stackoverflow.com/questions/36354405/spring-security-disable-logout-redirect.
 		.and()
 		.cors().disable().csrf().disable();
 	}

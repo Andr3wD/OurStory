@@ -87,69 +87,69 @@
 			<!-- Thanks to https://github.com/ekim197711/springboot-vuejs-maven/blob/master/pom.xml -->
 			<!-- Run npm run build so the dist folder contains latest distributable 
 				code -->
-			<plugin>
-				<artifactId>exec-maven-plugin</artifactId>
-				<groupId>org.codehaus.mojo</groupId>
-				<executions>
-					<!-- Thanks to https://gist.github.com/phillipgreenii/7c954e3c3911e5c32bd0 -->
-					<execution>
-						<id>npm install dependencies</id>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<phase>initialize</phase>
-						<configuration>
-							<workingDirectory>src/frontend</workingDirectory>
-							<executable>npm</executable>
-							<arguments>
-								<argument>install</argument>
-							</arguments>
-						</configuration>
-					</execution>
+<!--			<plugin>-->
+<!--				<artifactId>exec-maven-plugin</artifactId>-->
+<!--				<groupId>org.codehaus.mojo</groupId>-->
+<!--				<executions>-->
+<!--					&lt;!&ndash; Thanks to https://gist.github.com/phillipgreenii/7c954e3c3911e5c32bd0 &ndash;&gt;-->
+<!--					<execution>-->
+<!--						<id>npm install dependencies</id>-->
+<!--						<goals>-->
+<!--							<goal>exec</goal>-->
+<!--						</goals>-->
+<!--						<phase>initialize</phase>-->
+<!--						<configuration>-->
+<!--							<workingDirectory>src/frontend</workingDirectory>-->
+<!--							<executable>npm</executable>-->
+<!--							<arguments>-->
+<!--								<argument>install</argument>-->
+<!--							</arguments>-->
+<!--						</configuration>-->
+<!--					</execution>-->
 
-					<execution>
-						<id>npm build the vue app</id>
-						<phase>generate-resources</phase>
-						<goals>
-							<goal>exec</goal>
-						</goals>
-						<configuration>
-							<workingDirectory>src/frontend</workingDirectory>
-							<executable>npm</executable>
-							<arguments>
-								<argument>run</argument>
-								<argument>build</argument>
-								<argument>--fix</argument>
-							</arguments>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+<!--					<execution>-->
+<!--						<id>npm build the vue app</id>-->
+<!--						<phase>generate-resources</phase>-->
+<!--						<goals>-->
+<!--							<goal>exec</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<workingDirectory>src/frontend</workingDirectory>-->
+<!--							<executable>npm</executable>-->
+<!--							<arguments>-->
+<!--								<argument>run</argument>-->
+<!--								<argument>build</argument>-->
+<!--								<argument>&#45;&#45;fix</argument>-->
+<!--							</arguments>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 
 			<!-- Copy the vuejs dist folder into Spring Boot target static folder. 
 				Make sure npm run build has been executed -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-resources-plugin</artifactId>
-				<executions>
-					<execution>
-						<id>Copy my VueJS app into my Spring Boot target static folder</id>
-						<phase>process-resources</phase>
-						<goals>
-							<goal>copy-resources</goal>
-						</goals>
-						<configuration>
-							<outputDirectory>target/classes/static</outputDirectory>
-							<resources>
-								<resource>
-									<directory>src/frontend/dist</directory>
-									<filtering>true</filtering>
-								</resource>
-							</resources>
-						</configuration>
-					</execution>
-				</executions>
-			</plugin>
+<!--			<plugin>-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-resources-plugin</artifactId>-->
+<!--				<executions>-->
+<!--					<execution>-->
+<!--						<id>Copy my VueJS app into my Spring Boot target static folder</id>-->
+<!--						<phase>process-resources</phase>-->
+<!--						<goals>-->
+<!--							<goal>copy-resources</goal>-->
+<!--						</goals>-->
+<!--						<configuration>-->
+<!--							<outputDirectory>target/classes/static</outputDirectory>-->
+<!--							<resources>-->
+<!--								<resource>-->
+<!--									<directory>src/frontend/dist</directory>-->
+<!--									<filtering>true</filtering>-->
+<!--								</resource>-->
+<!--							</resources>-->
+<!--						</configuration>-->
+<!--					</execution>-->
+<!--				</executions>-->
+<!--			</plugin>-->
 
 
 		</plugins>

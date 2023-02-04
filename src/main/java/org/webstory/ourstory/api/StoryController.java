@@ -20,7 +20,7 @@ import org.webstory.ourstory.services.StoryService;
 
 
 @CrossOrigin(origins = "*", maxAge = 3600)
-@RequestMapping("/story") // Global story.
+@RequestMapping("/story")
 @RestController
 public class StoryController {
 
@@ -39,12 +39,12 @@ public class StoryController {
 	@GetMapping("/getSegments")
 	public ResponseEntity<List<SegmentResponse>> getSegments(@RequestParam String title) {
 		System.out.println("title requested: " + title);
-		if (title.equals("global")) {
+		if (title.equals("front-page")) { //  TODO change to front-page in FE
 			// TODO break into 3 lines
 			// TODO LOOKAT change SegmentResponse return to StoryResponse
 			
-			ObjectId globalStory = storyService.findByTitle("global").getId(); // Get ID of global story
-			List<SegmentResponse> responses = storyService.convertToSegmentResponse(globalStory);
+			ObjectId frontPageStory = storyService.findByTitle("front-page").getId(); // Get ID of front-page story
+			List<SegmentResponse> responses = storyService.convertToSegmentResponse(frontPageStory);
 			return new ResponseEntity<List<SegmentResponse>>(responses, HttpStatus.OK);
 		}
 		return null;

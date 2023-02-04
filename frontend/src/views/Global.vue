@@ -56,7 +56,7 @@ export default {
     submitMessage (e) {
       console.log('submitting message')
       // Submit the segment to the backend, with story title 'global'
-      segmentService.submitSegment(this.currentSegment, 'global').then(
+      segmentService.submitSegment(this.currentSegment, 'front-page').then(
         response => {
           console.log(response)
           if (response.status === 200) { // OK
@@ -82,7 +82,7 @@ export default {
       return newArr
     },
     getGlobalSegments () {
-      segmentService.getSegments('global')
+      segmentService.getSegments('front-page')
         .then(
           response => {
             this.realSegments = response.data
