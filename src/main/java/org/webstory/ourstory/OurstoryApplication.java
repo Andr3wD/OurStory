@@ -40,12 +40,6 @@ public class OurstoryApplication {
 	public void makeAdminAccount() {
 		try {
 			User user = (User) userService.loadUserByUsername("Admin");
-			userService.delete(user);
-			user = new User();
-			user.addRole("ROLE_ADMIN");
-			user.setUsername("Admin");
-			user.setPassword("Admin");
-			userService.save(user);
 		} catch (UsernameNotFoundException e) {
 			User user = new User();
 			user.addRole("ROLE_ADMIN");

@@ -13,13 +13,9 @@ public @Data class Segment {
 
 	@Id
 	private ObjectId id;
-
 	private String message;
-
 	private ObjectId owner;
-	
 	private ObjectId parent;
-
 	private Date created = new Date();
 
 	// TODO add ratings and whatnot later.

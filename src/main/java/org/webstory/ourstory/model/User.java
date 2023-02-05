@@ -20,7 +20,6 @@ import lombok.Data;
  * without accounts, so we need to block via IP and fingerprinting.
  *
  */
-@SuppressWarnings("serial")
 //This annotation just tells MongoDB what 'collection' name these instances should be saved to.
 @Document(collection = "users")
 //The @Data annotation removes all boilerplate. Getters, setters, equals, hashcode, tostring, and default constructor are automatically added behind the scenes.

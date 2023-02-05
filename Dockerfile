@@ -10,11 +10,9 @@ ENV NODE_OPTIONS=--openssl-legacy-provider \
     DISABLE_ESLINT_PLUGIN=true
 
 RUN --mount=type=cache,target=node_modules \
-    npm install --progress=false --prefer-offline --no-audit \
+    npm install --progress=false --prefer-offline --no-audit
 RUN --mount=type=cache,target=node_modules \
     npm run build
-
-
 
 
 # BUILD BE and bundle FE
